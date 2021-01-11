@@ -36,11 +36,9 @@ class PokemonListViewCell: UITableViewCell {
         mainView.layer.shadowRadius = 5
         
         
-        
         mainView.backgroundColor = UIColor.white
         mainView.translatesAutoresizingMaskIntoConstraints = false;
         pokemonImageView.translatesAutoresizingMaskIntoConstraints = false;
-      
 
         pokemonNameLabel.textColor = UIColor.black
         pokemonNameLabel.font = UIFont.boldSystemFont(ofSize: 14)
@@ -55,14 +53,12 @@ class PokemonListViewCell: UITableViewCell {
             mainView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             mainView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10),
             mainView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10),
-            mainView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-          
+            mainView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),         
       
             
             pokemonImageView.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 10),
             pokemonImageView.leftAnchor.constraint(equalTo: mainView.leftAnchor, constant: 10),
             pokemonImageView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -10),
-         
             pokemonImageView.widthAnchor.constraint(equalToConstant: 50),
             
             
@@ -70,11 +66,6 @@ class PokemonListViewCell: UITableViewCell {
             pokemonNameLabel.leftAnchor.constraint(equalTo: pokemonImageView.rightAnchor, constant: 10),
             pokemonNameLabel.rightAnchor.constraint(equalTo: mainView.rightAnchor, constant: -10),
             pokemonNameLabel.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -10),
-            
-            
-            
-            
-       
         ])
 
         
@@ -84,12 +75,12 @@ class PokemonListViewCell: UITableViewCell {
                 
         let url = URL(string: imageUrl)
        
-            let data = try? Data(contentsOf: url!)
-            DispatchQueue.main.async {
-                self.pokemonImageView.image = UIImage(data: data!)
-            }
+        let data = try? Data(contentsOf: url!)
+        DispatchQueue.main.async {
+            self.pokemonImageView.image = UIImage(data: data!)
+        }
         
-        pokemonNameLabel.text = pokemonName
+        pokemonNameLabel.text = "\(pokemonId) - \(pokemonName)"
         
         
     }

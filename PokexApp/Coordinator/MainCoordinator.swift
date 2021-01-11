@@ -38,10 +38,8 @@ public class MainCoordinator: Coordinator {
 extension MainCoordinator: PokedexViewControllerDelegate {
     func PokedexViewControllerDidTappedList(viewController: PokedexViewController) {
         
-        print("Carrgando dados")
-        Services.getPokemonList(limit: 10, offset: 1) { (pokemonList) in
-            
-            
+     
+        Services.getPokemonList(limit: 20, offset: 0) { (pokemonList) in
             if let list = pokemonList {
                 DispatchQueue.main.async {
                     let pokemonListViewController = PokemonListViewController(pokemonList: list)
@@ -61,7 +59,24 @@ extension MainCoordinator: PokedexViewControllerDelegate {
 extension MainCoordinator:PokemonListViewControllerDelegate {
     func pokemonListViewController(didSelect pokemonDetailsUrl: String, viewController: PokemonListViewController) {
         print(pokemonDetailsUrl)
-        self.navigationController.popViewController(animated: true)
+        
+        Services.getPokemonDetail(from: pokemonDetailsUrl) { (pokemon) in
+      
+            if let pokemon = pokemon {
+                DispatchQueue.main.async {
+                    let pokemonDetailViewController = PokemonDetailViewController(pokemon: pokemon)
+                    self.navigationController.pushViewController(pokemonDetailViewController, animated: true)
+                }
+            }
+            else {
+                print("Erro")
+            }
+            } failureHandler: {
+            print("Erro")
+        }
+        
+        
+    
     }
     
     

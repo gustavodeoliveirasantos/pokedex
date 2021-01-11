@@ -94,7 +94,7 @@ extension PokemonListViewController : UITableViewDataSource {
         var pokemonId = pokemon.url.replacingOccurrences(of: "https://pokeapi.co/api/v2/pokemon/", with: "")        
         pokemonId = pokemonId.replacingOccurrences(of: "/", with: "")
         
-        cell.updateCell(pokemonId: "1", pokemonName: pokemon.name.firstUppercased, imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(pokemonId).png")
+        cell.updateCell(pokemonId: pokemonId, pokemonName: pokemon.name.firstUppercased, imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(pokemonId).png")
         
         return cell
          

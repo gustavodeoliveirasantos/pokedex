@@ -12,25 +12,62 @@ import Foundation
 
 
 public struct Pokemon: Decodable {
-    let height: Int
     let id: Int
+    let name: String
+    let height: Double
+    let weight: Double
+    let sprites: PokemonSprites
+    let types: [PokemonTypes]
+    let abilities: [PokemoAbilities]
+}
+
+public struct PokemonSprites: Decodable {
+    let back_default: String
+    let back_shiny: String
+    let front_default: String
+    let front_shiny: String
+}
+
+
+public struct PokemonTypes: Decodable {
+    let slot: Int
+    let type: Info
+
+}
+
+public struct PokemoAbilities: Decodable {
+    let slot: Int
+    let is_hidden: Bool
+    let ability: Info
+}
+
+public struct Abilities {
+    let effect_entries: [AbilityEntries]
+}
+
+public struct AbilityEntries {
+    let effect: String
+    let short_effect: String
+    let language: Info
 }
 
 
 
 
-public struct PokemonList: Decodable {
-    let count: Int
-    let next: String
-    let previous: String
-    let results: [PokemonUnitList]
-    
-}
-
-
-public struct PokemonUnitList: Decodable {
+public struct Info: Decodable {
     let name: String
     let url: String
 
 }
+
+
+public struct PokemonList: Decodable {
+    let count: Int
+    let next: String?
+    let previous: String?
+    let results: [Info]
+    
+}
+
+
 
