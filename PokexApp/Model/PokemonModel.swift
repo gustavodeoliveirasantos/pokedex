@@ -41,17 +41,15 @@ public struct PokemoAbilities: Decodable {
     let ability: Info
 }
 
-public struct Abilities {
+public struct Ability: Decodable {
     let effect_entries: [AbilityEntries]
 }
 
-public struct AbilityEntries {
+public struct AbilityEntries: Decodable  {
     let effect: String
     let short_effect: String
     let language: Info
 }
-
-
 
 
 public struct Info: Decodable {

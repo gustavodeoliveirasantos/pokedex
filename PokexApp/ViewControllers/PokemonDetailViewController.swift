@@ -22,7 +22,7 @@
         
     var srollView = UIScrollView()
         
-    var abilitiesTableView = UITableView()
+   
     var pokemonView = UIView()
     var pokemonNameLabel = UILabel()
     var pokemonIdLabel = UILabel()
@@ -30,6 +30,7 @@
     var typesLabel = UILabel()
     var pokemonInfoStack = UIStackView()
     var measuresStack = UIStackView()
+      var  abilitiesView = CarouselInformationView()
         
     init(pokemon: Pokemon){
 
@@ -57,7 +58,7 @@
 
     func setupLayout() {
 
-        
+        getAbilities()
         getPokemonImages ()
         view.backgroundColor = UIColor.white
 
@@ -116,19 +117,16 @@
         measuresStack.addArrangedSubview(heightView)
         measuresStack.addArrangedSubview(typesView)
         measuresStack.addArrangedSubview(weightView)
+
         
         self.view.addSubview(measuresStack)
+    
+        abilitiesView.translatesAutoresizingMaskIntoConstraints = false
+ 
 
-        abilitiesTableView.translatesAutoresizingMaskIntoConstraints = false
-        abilitiesTableView.delegate = self
-        abilitiesTableView.dataSource = self
-        abilitiesTableView.register(PokemonListViewCell.self, forCellReuseIdentifier: "abilityCell")
-
-        abilitiesTableView.rowHeight = 90
-        self.view.addSubview(abilitiesTableView)
-        
+        self.view.addSubview(abilitiesView)
         setupConstraints ()
-        abilitiesTableView.reloadData()
+     
     }
         
     func setupConstraints () {
@@ -149,21 +147,55 @@
             pokemonInfoStack.leftAnchor.constraint(equalTo: pokemonImageView.rightAnchor, constant: 10),
             pokemonInfoStack.rightAnchor.constraint(equalTo: pokemonView.rightAnchor, constant: -10),
             
-            
             measuresStack.topAnchor.constraint(equalTo:  pokemonView.bottomAnchor, constant: 10),
             measuresStack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
             measuresStack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-            
-            abilitiesTableView.topAnchor.constraint(equalTo:  measuresStack.bottomAnchor, constant: 10),
-            abilitiesTableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
-            abilitiesTableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-            abilitiesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -10)
+            measuresStack.heightAnchor.constraint(equalToConstant: 70),
+                                        
+            abilitiesView.topAnchor.constraint(equalTo:  measuresStack.bottomAnchor, constant: 10),
+            abilitiesView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+            abilitiesView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
+            abilitiesView.heightAnchor.constraint(equalToConstant: 200)
          
         ])
     }
     
-       
+        func getAbilities()  {
+            
+           // var abilitiesViewModel = [CarouselInformationViewModel]()
+            
+            for pokemonAbility in pokemon.abilities {
 
+                Services.getPokemonAbilities(from: pokemonAbility.ability.url) { (ability) in
+                    if let ability = ability {
+                        
+                        let englishEffectEntrie = ability.effect_entries.first(where: {$0.language.name.lowercased() == "en" })
+                        guard let englishDescription = englishEffectEntrie?.effect.description else {return}
+                        let abilityViewModel = CarouselInformationViewModel(title: pokemonAbility.ability.name, description: englishDescription)
+                     //   abilitiesViewModel.append(abilityViewModel)
+                        DispatchQueue.main.async {
+                            self.abilitiesView.loadInfo(viewModel:abilityViewModel)
+                            print ("Ability received")
+                        }
+                        
+                    }
+                    
+                 
+                    else {
+                        print ("ERRO")
+                    }
+                    
+                    
+                } failureHandler: {
+                    print ("Erro")
+                }
+                
+                
+            }
+            
+        }
+    
+        
     func getPokemonImages () {
 
         let images = [pokemon.sprites.front_default,
@@ -200,36 +232,3 @@
 }
     
     
-extension PokemonDetailViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return "Abilities"
-//    }
-//
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pokemon.abilities.count
-    }
-   
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       print("Loading table")
-        let cell = tableView.dequeueReusableCell(withIdentifier: "abilityCell", for: indexPath)  as! AbilityViewCell
-        
-        cell.selectionStyle = .none
-     
-        let title = pokemon.abilities[indexPath.row].ability.name
-        cell.updateCell(title: title, description: "")
-        return cell
-
-    }
-        
-}
-    
-extension PokemonDetailViewController: UITableViewDelegate {
-
-}
-
-
-

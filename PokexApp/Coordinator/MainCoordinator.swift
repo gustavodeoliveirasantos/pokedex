@@ -39,9 +39,11 @@ extension MainCoordinator: PokedexViewControllerDelegate {
     func PokedexViewControllerDidTappedList(viewController: PokedexViewController) {
         
      
+    //    viewController.setLoading (true)
         Services.getPokemonList(limit: 20, offset: 0) { (pokemonList) in
             if let list = pokemonList {
                 DispatchQueue.main.async {
+        //            viewController.setLoading (false)
                     let pokemonListViewController = PokemonListViewController(pokemonList: list)
                     pokemonListViewController.delegate = self
                     self.navigationController.pushViewController(pokemonListViewController, animated: true)

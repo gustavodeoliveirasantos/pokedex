@@ -22,6 +22,7 @@
 		B78F403325AA2399001D21F0 /* PokexAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78F403225AA2399001D21F0 /* PokexAppTests.swift */; };
 		B78F403E25AA2399001D21F0 /* PokexAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78F403D25AA2399001D21F0 /* PokexAppUITests.swift */; };
 		B78F405025AA2630001D21F0 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78F404F25AA2630001D21F0 /* Services.swift */; };
+		B7CC9CD925ADB17100263408 /* CarouselInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC9CD825ADB17100263408 /* CarouselInformationView.swift */; };
 		B7DF90BB25AA314100F949A0 /* PokemonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DF90BA25AA314100F949A0 /* PokemonModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		B78F403D25AA2399001D21F0 /* PokexAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokexAppUITests.swift; sourceTree = "<group>"; };
 		B78F403F25AA2399001D21F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B78F404F25AA2630001D21F0 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
+		B7CC9CD825ADB17100263408 /* CarouselInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselInformationView.swift; sourceTree = "<group>"; };
 		B7DF90BA25AA314100F949A0 /* PokemonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,6 +118,7 @@
 				B73EE25525AA572A00D26C6D /* PokemonListViewCell.swift */,
 				B757392E25AB7C990018164B /* PokemonSizeView.swift */,
 				B757393325ABADF70018164B /* AbilityViewCell.swift */,
+				B7CC9CD825ADB17100263408 /* CarouselInformationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				B78F402025AA2396001D21F0 /* PokedexViewController.swift in Sources */,
 				B73EE25F25AA770A00D26C6D /* Extensions.swift in Sources */,
 				B70207C625AA482400F71F85 /* MainCoordinator.swift in Sources */,
+				B7CC9CD925ADB17100263408 /* CarouselInformationView.swift in Sources */,
 				B73EE25625AA572A00D26C6D /* PokemonListViewCell.swift in Sources */,
 				B78F405025AA2630001D21F0 /* Services.swift in Sources */,
 				B78F401C25AA2396001D21F0 /* AppDelegate.swift in Sources */,
