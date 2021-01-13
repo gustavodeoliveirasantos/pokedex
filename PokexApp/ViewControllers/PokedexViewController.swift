@@ -33,22 +33,27 @@ protocol PokedexViewControllerDelegate: AnyObject  {
     
     func setupLayout() {        
        
-
-        
         showListButton.setTitle("Listar Todos", for: .normal)
+        showListButton.setTitleColor(.black, for: .normal)       
         showListButton.backgroundColor = UIColor.yellow
-        showListButton.tintColor = .blue
         showListButton.addTarget(self, action: #selector(showPokemonList), for: .touchUpInside)
         showListButton.translatesAutoresizingMaskIntoConstraints = false
 
+        showListButton.layer.cornerRadius = 60
+        showListButton.layer.shadowColor = UIColor.black.cgColor
+        showListButton.layer.shadowOpacity = 0.5
+        showListButton.layer.shadowOffset = .zero
+        showListButton.layer.shadowRadius = 60
+
+        
         view.addSubview(showListButton)
         
         
         NSLayoutConstraint.activate([
-            showListButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            showListButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             showListButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            showListButton.heightAnchor.constraint(equalToConstant: 100),
-            showListButton.widthAnchor.constraint(equalToConstant: 100),
+            showListButton.heightAnchor.constraint(equalToConstant: 120),
+            showListButton.widthAnchor.constraint(equalToConstant: 120),
         ])
                                          
     }

@@ -28,8 +28,8 @@ class PokemonListViewCell: UITableViewCell {
     func setupLayout () {
         
         mainView.layer.cornerRadius = 5
-        mainView.layer.borderWidth = 0.5
-        mainView.layer.borderColor = UIColor.gray.cgColor
+      //  mainView.layer.borderWidth = 0.5
+      //  mainView.layer.borderColor = UIColor.gray.cgColor
         mainView.layer.shadowColor = UIColor.black.cgColor
         mainView.layer.shadowOpacity = 0.3
         mainView.layer.shadowOffset = .zero
