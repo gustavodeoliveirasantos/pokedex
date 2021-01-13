@@ -144,7 +144,29 @@ public class Services {
             }
         }
         
+        
     }
-    
-}
+    public static func getPokemonSpecie(from url: String,successHandler: @escaping (Specie?) -> Void, failureHandler: @escaping () -> Void) {
+        
+        
+        let fullUrlString = URL(string: url)!
+        self.generalHttpRequestNonClients(url: fullUrlString,
+                                          bodyJson: nil,
+                                          successHandler: { data in
+                                            
+                                            DispatchQueue.main.async {
+                                                //  print(try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? NSDictionary)
+                                                let success = try? JSONDecoder().decode(Specie.self, from: data)
+                                                successHandler(success)
+                                            }
+                                            
+                                          }) { error in
+            DispatchQueue.main.async {//ERRO
+                failureHandler()
+            }
+        }
+        
+        
+    }
 
+}

@@ -23,6 +23,7 @@
         var typesLabel = UILabel()
         var pokemonInfoStack = UIStackView()
         var measuresStack = UIStackView()
+        var speciedsStack = UIStackView()
         var  abilitiesView: CarouselInformationView
         
         init(pokemon: Pokemon){
@@ -51,16 +52,16 @@
         }
         override func viewDidAppear(_ animated: Bool) {
             super.viewDidAppear(animated)
-  
+            
         }
         
         override func viewDidLayoutSubviews() {
             updateScrollViewContentSize()
         }
         func setupLayout() {
-          
+            
             getPokemonImages ()
-
+            
             self.view.backgroundColor = .white
             pokemonView.translatesAutoresizingMaskIntoConstraints = false
             
@@ -88,52 +89,19 @@
             pokemonView.addSubview(pokemonInfoStack)
             self.scrollView.addSubview(pokemonView)
             
-            
-            let heightView = PokemonSizeView(title: "Height", value: "\(pokemon.height)m")
-            heightView.translatesAutoresizingMaskIntoConstraints = false
-            
-            var weightView = PokemonSizeView(title: "Weight", value: "\(pokemon.weight)kg")
-            weightView.translatesAutoresizingMaskIntoConstraints = false
-            
-            
-            
-            
-            var typeString: String = ""
-            for (i,type) in pokemon.types.enumerated() {
-                
-                typeString += type.type.name
-                if i < pokemon.types.count - 1 {
-                    typeString += " | "
-                }
-            }
-            let typesView = PokemonSizeView(title: "Type", value: typeString)
-            typesView.translatesAutoresizingMaskIntoConstraints = false
-            
-            
-            measuresStack.translatesAutoresizingMaskIntoConstraints = false
-            measuresStack.axis = .horizontal
-            measuresStack.distribution = .fillEqually
-            measuresStack.spacing = 5
-            
-            
-            measuresStack.addArrangedSubview(heightView)
-            measuresStack.addArrangedSubview(typesView)
-            measuresStack.addArrangedSubview(weightView)            
-            self.scrollView.addSubview(measuresStack)
+            getMeasures()
+            getSpecies()
+          
             
             abilitiesView.translatesAutoresizingMaskIntoConstraints = false
             self.scrollView.addSubview(abilitiesView)
             
             scrollView.delegate = self
-                        scrollView.translatesAutoresizingMaskIntoConstraints = false
+            scrollView.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview(scrollView)
             
-            
-            
             setupConstraints ()
-            
-           
-            
+                        
         }
         
         func setupConstraints () {
@@ -149,28 +117,107 @@
                 pokemonView.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 10),
                 pokemonView.rightAnchor.constraint(equalTo: scrollView.rightAnchor, constant: -10),
                 pokemonView.heightAnchor.constraint(equalToConstant: 100),
-
+                
                 pokemonImageView.topAnchor.constraint(equalTo: pokemonView.topAnchor),
                 pokemonImageView.leftAnchor.constraint(equalTo: pokemonView.leftAnchor, constant: 10),
                 pokemonImageView.bottomAnchor.constraint(equalTo: pokemonView.bottomAnchor),
                 pokemonImageView.widthAnchor.constraint(equalToConstant: 100),
-
+                
                 pokemonInfoStack.centerYAnchor.constraint(equalTo: pokemonImageView.centerYAnchor),
                 pokemonInfoStack.leftAnchor.constraint(equalTo: pokemonImageView.rightAnchor, constant: 10),
                 pokemonInfoStack.rightAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.rightAnchor, constant: -10),
-
+                
                 measuresStack.topAnchor.constraint(equalTo:  pokemonView.bottomAnchor, constant: 10),
                 measuresStack.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
                 measuresStack.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
                 measuresStack.heightAnchor.constraint(equalToConstant: 70),
-
-                abilitiesView.topAnchor.constraint(equalTo:  measuresStack.bottomAnchor, constant: 10),
+                
+                speciedsStack.topAnchor.constraint(equalTo:  measuresStack.bottomAnchor, constant: 10),
+                speciedsStack.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
+                speciedsStack.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
+                speciedsStack.heightAnchor.constraint(equalToConstant: 70),
+                
+                abilitiesView.topAnchor.constraint(equalTo:  speciedsStack.bottomAnchor, constant: 10),
                 abilitiesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20),
                 abilitiesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -20),
-//
-         
+                //
+                
             ])
         }
+        
+        func getMeasures(){
+            let heightView = PokemonSizeView(title: "Height", value: "\(pokemon.height)m")
+            heightView.translatesAutoresizingMaskIntoConstraints = false
+            
+            var weightView = PokemonSizeView(title: "Weight", value: "\(pokemon.weight)kg")
+            weightView.translatesAutoresizingMaskIntoConstraints = false
+            
+            
+            var typeString: String = ""
+            for (i,type) in pokemon.types.enumerated() {
+                
+                typeString += type.type.name
+                if i < pokemon.types.count - 1 {
+                    typeString += " | "
+                }
+            }
+            let typesView = PokemonSizeView(title: "Type", value: typeString)
+            typesView.translatesAutoresizingMaskIntoConstraints = false
+            
+            measuresStack.translatesAutoresizingMaskIntoConstraints = false
+            measuresStack.axis = .horizontal
+            measuresStack.distribution = .fillEqually
+            measuresStack.spacing = 5
+            
+            measuresStack.addArrangedSubview(heightView)
+            measuresStack.addArrangedSubview(typesView)
+            measuresStack.addArrangedSubview(weightView)
+            self.scrollView.addSubview(measuresStack)
+        }
+        
+        func getSpecies(){
+            
+            let isBabyView = PokemonSizeView(title: "Baby", value: "...")
+            isBabyView.translatesAutoresizingMaskIntoConstraints = false
+            
+            let isLegendaryView = PokemonSizeView(title: "Legenday", value: "...")
+            isLegendaryView.translatesAutoresizingMaskIntoConstraints = false
+            
+            let isMythicalView = PokemonSizeView(title: "Mythical", value: "...")
+            isMythicalView.translatesAutoresizingMaskIntoConstraints = false
+            
+            speciedsStack.translatesAutoresizingMaskIntoConstraints = false
+            speciedsStack.axis = .horizontal
+            speciedsStack.distribution = .fillEqually
+            speciedsStack.spacing = 5
+            
+            speciedsStack.addArrangedSubview(isBabyView)
+            speciedsStack.addArrangedSubview(isLegendaryView)
+            speciedsStack.addArrangedSubview(isMythicalView)
+            
+            scrollView.addSubview(speciedsStack)
+            
+            
+            Services.getPokemonSpecie(from: pokemon.species.url) { (specie) in
+                if let specie = specie {
+                    DispatchQueue.main.async {
+                        isBabyView.valueLabel.text = specie.is_baby ? "Yes" : "No"
+                        isLegendaryView.valueLabel.text = specie.is_legendary ? "Yes" : "No"
+                        isMythicalView.valueLabel.text = specie.is_mythical ? "Yes" : "No"
+                    }
+                }
+                
+                
+                else {
+                    print ("ERRO")
+                }
+                
+                
+            } failureHandler: {
+                print ("Erro")
+            }
+        }
+        
         
         
         
@@ -192,7 +239,7 @@
             
             
             timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
-               
+                
                 if position == images.count {
                     position = 0
                 }
@@ -208,21 +255,18 @@
             }
         }
         func updateScrollViewContentSize() {
-         
             
-            let viewsHeight = pokemonView.frame.height + measuresStack.frame.height + abilitiesView.frame.height
+            
+            let viewsHeight = pokemonView.frame.height + measuresStack.frame.height + speciedsStack.frame.height + abilitiesView.frame.height
             
             let difference = viewsHeight - UIScreen.main.bounds.height
             
             print("viewsHeight \(viewsHeight)")
             print(UIScreen.main.bounds.height)
             print(difference)
-            
-     
+                        
             scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + difference + 80 )
             
-            
-          
         }
     }
     

@@ -30,7 +30,6 @@ class PokemonSizeView: UIView {
     
     
     func setupLayout() {
-       
       
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false

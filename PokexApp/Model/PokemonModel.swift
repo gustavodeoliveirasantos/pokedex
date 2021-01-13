@@ -19,6 +19,7 @@ public struct Pokemon: Decodable {
     let sprites: PokemonSprites
     let types: [PokemonTypes]
     let abilities: [PokemoAbilities]
+    let species: Info
 }
 
 public struct PokemonSprites: Decodable {
@@ -49,6 +50,12 @@ public struct AbilityEntries: Decodable  {
     let effect: String
     let short_effect: String
     let language: Info
+}
+
+public struct Specie: Decodable  {
+    let is_baby: Bool
+    let is_legendary: Bool
+    let is_mythical: Bool
 }
 
 
