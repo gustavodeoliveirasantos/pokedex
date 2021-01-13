@@ -12,17 +12,10 @@
     class PokemonDetailViewController: UIViewController {
         
         
-        
         let pokemon: Pokemon
-        //    var abilities: [Abilities]
         var timer: Timer?
         
-        //Views
-        
-        
-        var srollView = UIScrollView()
-        
-        
+        var scrollView = UIScrollView()
         var pokemonView = UIView()
         var pokemonNameLabel = UILabel()
         var pokemonIdLabel = UILabel()
@@ -46,7 +39,7 @@
         
         override func viewDidLoad() {
             super.viewDidLoad()
-            
+            title = "Pokemon"
             setupLayout()
         }
         
@@ -56,12 +49,19 @@
             timer?.invalidate()
             
         }
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+  
+        }
         
+        override func viewDidLayoutSubviews() {
+            updateScrollViewContentSize()
+        }
         func setupLayout() {
           
             getPokemonImages ()
 
-            
+            self.view.backgroundColor = .white
             pokemonView.translatesAutoresizingMaskIntoConstraints = false
             
             
@@ -86,7 +86,7 @@
             
             pokemonView.addSubview(pokemonImageView)
             pokemonView.addSubview(pokemonInfoStack)
-            self.view.addSubview(pokemonView)
+            self.scrollView.addSubview(pokemonView)
             
             
             let heightView = PokemonSizeView(title: "Height", value: "\(pokemon.height)m")
@@ -94,6 +94,8 @@
             
             var weightView = PokemonSizeView(title: "Weight", value: "\(pokemon.weight)kg")
             weightView.translatesAutoresizingMaskIntoConstraints = false
+            
+            
             
             
             var typeString: String = ""
@@ -116,16 +118,21 @@
             
             measuresStack.addArrangedSubview(heightView)
             measuresStack.addArrangedSubview(typesView)
-            measuresStack.addArrangedSubview(weightView)
-            
-            
-            self.view.addSubview(measuresStack)
+            measuresStack.addArrangedSubview(weightView)            
+            self.scrollView.addSubview(measuresStack)
             
             abilitiesView.translatesAutoresizingMaskIntoConstraints = false
+            self.scrollView.addSubview(abilitiesView)
+            
+            scrollView.delegate = self
+                        scrollView.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(scrollView)
             
             
-            self.view.addSubview(abilitiesView)
+            
             setupConstraints ()
+            
+           
             
         }
         
@@ -133,30 +140,35 @@
             
             NSLayoutConstraint.activate([
                 
-                pokemonView.topAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.topAnchor, constant: 10),
-                pokemonView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
-                pokemonView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-                pokemonView.heightAnchor.constraint(equalToConstant: 100),
+                scrollView.topAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.topAnchor),
+                scrollView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+                scrollView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+                scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
                 
+                pokemonView.topAnchor.constraint(equalTo:  scrollView.topAnchor, constant: 10),
+                pokemonView.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 10),
+                pokemonView.rightAnchor.constraint(equalTo: scrollView.rightAnchor, constant: -10),
+                pokemonView.heightAnchor.constraint(equalToConstant: 100),
+
                 pokemonImageView.topAnchor.constraint(equalTo: pokemonView.topAnchor),
                 pokemonImageView.leftAnchor.constraint(equalTo: pokemonView.leftAnchor, constant: 10),
                 pokemonImageView.bottomAnchor.constraint(equalTo: pokemonView.bottomAnchor),
                 pokemonImageView.widthAnchor.constraint(equalToConstant: 100),
-                
+
                 pokemonInfoStack.centerYAnchor.constraint(equalTo: pokemonImageView.centerYAnchor),
                 pokemonInfoStack.leftAnchor.constraint(equalTo: pokemonImageView.rightAnchor, constant: 10),
-                pokemonInfoStack.rightAnchor.constraint(equalTo: pokemonView.rightAnchor, constant: -10),
-                
+                pokemonInfoStack.rightAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.rightAnchor, constant: -10),
+
                 measuresStack.topAnchor.constraint(equalTo:  pokemonView.bottomAnchor, constant: 10),
-                measuresStack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
-                measuresStack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+                measuresStack.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
+                measuresStack.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
                 measuresStack.heightAnchor.constraint(equalToConstant: 70),
-                
+
                 abilitiesView.topAnchor.constraint(equalTo:  measuresStack.bottomAnchor, constant: 10),
-                abilitiesView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-                abilitiesView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
-                abilitiesView.heightAnchor.constraint(equalToConstant: 200)
-                
+                abilitiesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20),
+                abilitiesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -20),
+//
+         
             ])
         }
         
@@ -195,6 +207,30 @@
                 
             }
         }
+        func updateScrollViewContentSize() {
+         
+            
+            let viewsHeight = pokemonView.frame.height + measuresStack.frame.height + abilitiesView.frame.height
+            
+            let difference = viewsHeight - UIScreen.main.bounds.height
+            
+            print("viewsHeight \(viewsHeight)")
+            print(UIScreen.main.bounds.height)
+            print(difference)
+            
+     
+            scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + difference + 80 )
+            
+            
+          
+        }
     }
     
     
+    extension PokemonDetailViewController: UIScrollViewDelegate{
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            if scrollView.contentOffset.x != 0 {
+                scrollView.contentOffset.x = 0
+            }
+        }
+    }

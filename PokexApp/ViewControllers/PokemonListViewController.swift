@@ -34,7 +34,7 @@ class PokemonListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
+        title = "Pokedex"
         setupLayout()
      
     }
@@ -43,7 +43,12 @@ class PokemonListViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.view.backgroundColor = UIColor.yellow
+        
       
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.isUserInteractionEnabled = true
     }
     
     func setupLayout() {
@@ -63,9 +68,6 @@ class PokemonListViewController: UIViewController {
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
-        
-        
-    //    tableView.reloadData()
     }
     
     
@@ -101,14 +103,55 @@ extension PokemonListViewController : UITableViewDataSource {
   
     }
     
-   
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == pokemonList.results.count - 1 && pokemonList.next != nil {
+       
+            updatePokemonList(url: pokemonList.next!)
+        }
+        
+        
+    }
+    
+    func updatePokemonList(url: String) {
+        
+   //    pokemonList.next
+        Services.getPokemonList(limit: nil, offset: nil, url: url) { (pokemonList) in
+            
+            if let list = pokemonList {
+          
+                self.pokemonList.next = list.next
+                self.pokemonList.results.append(contentsOf: list.results)
+                
+                self.tableView.reloadData()
+            }
+            else {
+                print("ERROR")
+            }
+         
+        } failureHandler: {
+            print("ERROR")
+        }
+
+        
+       
+    }
+    
 }
 
 extension PokemonListViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        var pokemon = pokemonList.results[indexPath.row]
-        delegate?.pokemonListViewController(didSelect: pokemon.url, viewController: self)
+
+        tableView.isUserInteractionEnabled = false
+        if let selectedCell = tableView.cellForRow(at: indexPath) as? PokemonListViewCell {
+            selectedCell.animateCell {
+                var pokemon = self.pokemonList.results[indexPath.row]
+                self.delegate?.pokemonListViewController(didSelect: pokemon.url, viewController: self)
+            }
+        }
+     
+        
+      
     }
 }
 

@@ -61,9 +61,9 @@ public struct Info: Decodable {
 
 public struct PokemonList: Decodable {
     let count: Int
-    let next: String?
-    let previous: String?
-    let results: [Info]
+    var next: String?
+    var previous: String?
+    var results: [Info]
     
 }
 

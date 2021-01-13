@@ -29,7 +29,7 @@ public class MainCoordinator: Coordinator {
         let pokedexViewController = PokedexViewController()
       
         pokedexViewController.delegate = self
-        pokedexViewController.view.backgroundColor = UIColor.red
+
         navigationController.viewControllers = [pokedexViewController]     
 
     }
@@ -40,7 +40,7 @@ extension MainCoordinator: PokedexViewControllerDelegate {
         
      
     //    viewController.setLoading (true)
-        Services.getPokemonList(limit: 20, offset: 0) { (pokemonList) in
+        Services.getPokemonList(limit: 20, offset: 60, url: nil) { (pokemonList) in
             if let list = pokemonList {
                 DispatchQueue.main.async {
         //            viewController.setLoading (false)

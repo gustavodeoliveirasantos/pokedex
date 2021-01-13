@@ -25,6 +25,7 @@ class CarouselInformationView: UIView {
     let scrollView = UIScrollView()
     let loadingIndicator = UIActivityIndicatorView()
     var titleLabel = UILabel()
+    var shadowView = UIView()
     init (pokemon: Pokemon){
         
         super.init(frame: .zero)
@@ -43,12 +44,13 @@ class CarouselInformationView: UIView {
     override func layoutSubviews() {
         
         var scrollViewContentSize = frame.width * CGFloat( viewModelList.count )
-        scrollView.contentSize = CGSize(width: scrollViewContentSize , height:150)
+        scrollView.contentSize = CGSize(width: scrollViewContentSize , height: scrollView.frame.height)
         
+        print ("scrollView.frame: \(scrollView.frame)")
         loadInfo()
-        
         updatePageIndicator()
-        print (scrollViewContentSize)
+        
+        layoutIfNeeded()
     }
     
     func setupLayout() {
@@ -63,29 +65,29 @@ class CarouselInformationView: UIView {
         pageIndicatorLabel.translatesAutoresizingMaskIntoConstraints = false
         
         
+        
         scrollView.delegate = self
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.isPagingEnabled = true
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.layer.shadowColor = UIColor.black.cgColor
-        scrollView.layer.shadowOpacity = 0.3
-        scrollView.layer.shadowOffset = .zero
-        scrollView.layer.shadowRadius = 5
+      
+        shadowView.backgroundColor = .white
+        shadowView.translatesAutoresizingMaskIntoConstraints = false
+        shadowView.layer.cornerRadius = 5
+        shadowView.layer.shadowColor = UIColor.black.cgColor
+        shadowView.layer.shadowOpacity = 0.3
+        shadowView.layer.shadowOffset = .zero
+        shadowView.layer.shadowRadius = 5
 
         
-        
-        scrollView.isScrollEnabled = true
-        scrollView.backgroundColor = UIColor.white
-        
         stackView.axis = .horizontal
-        
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         scrollView.addSubview(stackView)
         
-        
         addSubview(titleLabel)
+        addSubview(shadowView)
         addSubview(scrollView)
         addSubview(pageIndicatorLabel)
         
@@ -100,8 +102,13 @@ class CarouselInformationView: UIView {
             scrollView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
+            shadowView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            shadowView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
+            shadowView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
+            shadowView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 40),
+            
             pageIndicatorLabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
-            pageIndicatorLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor,constant: -20)
+            pageIndicatorLabel.bottomAnchor.constraint(equalTo: shadowView.bottomAnchor,constant: -20)
             
         ])
     }
@@ -122,7 +129,7 @@ class CarouselInformationView: UIView {
             let infoView = getInfoView(viewModel: viewModel)
             
             stackView.addArrangedSubview(infoView)
-            
+
             NSLayoutConstraint.activate([
                 infoView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, constant: 0),
                 infoView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor, constant: 0)
@@ -139,7 +146,9 @@ class CarouselInformationView: UIView {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        titleLabel.numberOfLines = 5
+        titleLabel.numberOfLines = 0
+     
+        titleLabel.sizeToFit()
         
         titleLabel.text = viewModel.title
         
@@ -147,7 +156,8 @@ class CarouselInformationView: UIView {
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.font = UIFont.systemFont(ofSize: 14)
         descriptionLabel.text = viewModel.description
-        descriptionLabel.numberOfLines = 5
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.sizeToFit()
         
         descriptionLabel.text = "loading..."
         
@@ -161,10 +171,12 @@ class CarouselInformationView: UIView {
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
             titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor,constant: 10),
             titleLabel.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -10),
+            titleLabel.heightAnchor.constraint(equalToConstant: 30),
             
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             descriptionLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
             descriptionLabel.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -10),
+            descriptionLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
             
             
         ])
@@ -177,7 +189,7 @@ class CarouselInformationView: UIView {
     
     func getDescription (viewModel: CarouselInformationViewModel, in label: UILabel, loading: UIActivityIndicatorView ) {
         
-        print ("getDescription")
+       
         Services.getPokemonAbilities(from: viewModel.url) { (ability) in
             if let ability = ability {
                 
@@ -187,8 +199,8 @@ class CarouselInformationView: UIView {
                 DispatchQueue.main.async {
                     label.text = englishDescription
                     loading.stopAnimating()
-                    
-                    print ("Ability received")
+                 
+                    self.layoutIfNeeded()
                 }
                 
             }

@@ -73,16 +73,26 @@ class PokemonListViewCell: UITableViewCell {
     
     func updateCell (pokemonId: String,pokemonName: String, imageUrl: String ) {
                 
-        let url = URL(string: imageUrl)
-       
-        let data = try? Data(contentsOf: url!)
-        DispatchQueue.main.async {
-            self.pokemonImageView.image = UIImage(data: data!)
-        }
-        
+        let url = URL(string: imageUrl)!
+        self.pokemonImageView.setImage(from: url)
         pokemonNameLabel.text = "\(pokemonId) - \(pokemonName)"
         
         
+    }
+    
+    func animateCell (finishAnimation: @escaping () -> Void) {
+        
+        UIView.animate(withDuration: 0.1) {
+            self.mainView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+          
+        } completion: { (_) in
+            UIView.animate(withDuration: 0.1) {
+                     self.mainView.transform = CGAffineTransform.identity
+                finishAnimation()
+               }
+        
+        }
+
     }
     
     

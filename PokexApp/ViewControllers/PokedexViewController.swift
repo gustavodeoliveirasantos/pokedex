@@ -16,7 +16,8 @@ protocol PokedexViewControllerDelegate: AnyObject  {
     
     
     var showListButton = UIButton ()
-    
+
+    var pikachuImageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +33,14 @@ protocol PokedexViewControllerDelegate: AnyObject  {
     }
     
     func setupLayout() {        
-       
-        showListButton.setTitle("Listar Todos", for: .normal)
+        self.view.backgroundColor = .red
+        
+        
+        pikachuImageView.translatesAutoresizingMaskIntoConstraints = false
+  
+        pikachuImageView.image = UIImage(named:"pikachuImage")
+        
+        showListButton.setTitle("List", for: .normal)
         showListButton.setTitleColor(.black, for: .normal)       
         showListButton.backgroundColor = UIColor.yellow
         showListButton.addTarget(self, action: #selector(showPokemonList), for: .touchUpInside)
@@ -41,27 +48,46 @@ protocol PokedexViewControllerDelegate: AnyObject  {
 
         showListButton.layer.cornerRadius = 60
         showListButton.layer.shadowColor = UIColor.black.cgColor
-        showListButton.layer.shadowOpacity = 0.5
+        showListButton.layer.shadowOpacity = 0.7
         showListButton.layer.shadowOffset = .zero
-        showListButton.layer.shadowRadius = 60
+        showListButton.layer.shadowRadius = 5
 
         
+   
         view.addSubview(showListButton)
+        view.addSubview(pikachuImageView)
+        
         
         
         NSLayoutConstraint.activate([
+            
             showListButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            showListButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            showListButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20),
             showListButton.heightAnchor.constraint(equalToConstant: 120),
             showListButton.widthAnchor.constraint(equalToConstant: 120),
+            
+            pikachuImageView.leftAnchor.constraint(equalTo: showListButton.rightAnchor, constant: 20),
+            pikachuImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            pikachuImageView.heightAnchor.constraint(equalToConstant: 150),
+            pikachuImageView.widthAnchor.constraint(equalToConstant: 150),
         ])
                                          
     }
     
     
     @objc func showPokemonList(sender: UIButton!) {
-        delegate?.PokedexViewControllerDidTappedList(viewController: self)        
-     
+        
+        UIView.animate(withDuration: 0.1) {
+            self.showListButton.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+          
+        } completion: { (_) in
+            UIView.animate(withDuration: 0.1) {
+                     self.showListButton.transform = CGAffineTransform.identity
+               }
+            self.delegate?.PokedexViewControllerDidTappedList(viewController: self)
+        }
+
+      
     }
     
     
