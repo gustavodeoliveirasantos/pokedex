@@ -86,12 +86,11 @@ extension PokemonListViewController : UITableViewDataSource {
         return pokemonList.results.count
     }
         
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {     
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "pokemonListViewCell", for: indexPath)  as! PokemonListViewCell
         cell.selectionStyle = .none
-        var pokemon = pokemonList.results[indexPath.row]
+        let pokemon = pokemonList.results[indexPath.row]
         
         var pokemonId = pokemon.url.replacingOccurrences(of: "https://pokeapi.co/api/v2/pokemon/", with: "")        
         pokemonId = pokemonId.replacingOccurrences(of: "/", with: "")
@@ -145,7 +144,7 @@ extension PokemonListViewController : UITableViewDelegate {
         tableView.isUserInteractionEnabled = false
         if let selectedCell = tableView.cellForRow(at: indexPath) as? PokemonListViewCell {
             selectedCell.animateCell {
-                var pokemon = self.pokemonList.results[indexPath.row]
+                let pokemon = self.pokemonList.results[indexPath.row]
                 self.delegate?.pokemonListViewController(didSelect: pokemon.url, viewController: self)
             }
         }

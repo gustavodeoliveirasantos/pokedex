@@ -91,21 +91,5 @@ protocol PokedexViewControllerDelegate: AnyObject  {
     }
     
     
-    
-    func getPokemon () {
-       // print("hello pokemon")        
-      
-        Services.getPokemonByName(name: "ditto") {pokemon in
-            if let pokemon = pokemon {
-             //   self.idLabel.text = String(pokemon.height)
-            }
-         
-        } failureHandler: {
-            print("failure")
-        }
-
-     
-        
-    }
 }
 

@@ -8,18 +8,18 @@
 import Foundation
 import UIKit
 
-struct CarouselInformationViewModel {
+struct AbilitiesCarouselInformationViewModel {
     let title: String
     let url: String
     let description: String
 }
 
-class CarouselInformationView: UIView {
+class AbilitiesCarouselInformationView: UIView {
     
     
     var currentPage = 0
     
-    var viewModelList =  [CarouselInformationViewModel] () 
+    var viewModelList =  [AbilitiesCarouselInformationViewModel] ()
     var pageIndicatorLabel  = UILabel()
     let stackView = UIStackView()
     let scrollView = UIScrollView()
@@ -31,8 +31,6 @@ class CarouselInformationView: UIView {
         super.init(frame: .zero)
         prepareViewModel(pokemon: pokemon)
         setupLayout()
-       
-        
         
         
     }
@@ -43,10 +41,8 @@ class CarouselInformationView: UIView {
     
     override func layoutSubviews() {
         
-        var scrollViewContentSize = frame.width * CGFloat( viewModelList.count )
+        let scrollViewContentSize = frame.width * CGFloat( viewModelList.count )
         scrollView.contentSize = CGSize(width: scrollViewContentSize , height: scrollView.frame.height)
-        
-        print ("scrollView.frame: \(scrollView.frame)")
         loadInfo()
         updatePageIndicator()
         
@@ -116,7 +112,7 @@ class CarouselInformationView: UIView {
     func prepareViewModel (pokemon: Pokemon) {
         
         for ability in pokemon.abilities {
-            let viewModel = CarouselInformationViewModel (title: ability.ability.name, url: ability.ability.url, description: "")
+            let viewModel = AbilitiesCarouselInformationViewModel (title: ability.ability.name, url: ability.ability.url, description: "")
             viewModelList.append(viewModel)
         }
         
@@ -138,7 +134,7 @@ class CarouselInformationView: UIView {
         
     }
     
-    func getInfoView(viewModel: CarouselInformationViewModel) -> UIView {
+    func getInfoView(viewModel: AbilitiesCarouselInformationViewModel) -> UIView {
         
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -187,7 +183,7 @@ class CarouselInformationView: UIView {
     }
     
     
-    func getDescription (viewModel: CarouselInformationViewModel, in label: UILabel, loading: UIActivityIndicatorView ) {
+    func getDescription (viewModel: AbilitiesCarouselInformationViewModel, in label: UILabel, loading: UIActivityIndicatorView ) {
         
        
         Services.getPokemonAbilities(from: viewModel.url) { (ability) in
@@ -224,7 +220,7 @@ class CarouselInformationView: UIView {
     
 }
 
-extension CarouselInformationView: UIScrollViewDelegate {
+extension AbilitiesCarouselInformationView: UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         

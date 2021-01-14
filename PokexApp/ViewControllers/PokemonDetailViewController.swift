@@ -24,12 +24,12 @@
         var pokemonInfoStack = UIStackView()
         var measuresStack = UIStackView()
         var speciedsStack = UIStackView()
-        var  abilitiesView: CarouselInformationView
+        var  abilitiesView: AbilitiesCarouselInformationView
         
         init(pokemon: Pokemon){
             
             self.pokemon = pokemon
-            abilitiesView = CarouselInformationView(pokemon: pokemon)
+            abilitiesView = AbilitiesCarouselInformationView(pokemon: pokemon)
             
             super.init(nibName: nil, bundle: nil)
         }
@@ -144,12 +144,11 @@
                 
             ])
         }
-        
         func getMeasures(){
             let heightView = PokemonSizeView(title: "Height", value: "\(pokemon.height)m")
             heightView.translatesAutoresizingMaskIntoConstraints = false
             
-            var weightView = PokemonSizeView(title: "Weight", value: "\(pokemon.weight)kg")
+            let weightView = PokemonSizeView(title: "Weight", value: "\(pokemon.weight)kg")
             weightView.translatesAutoresizingMaskIntoConstraints = false
             
             
@@ -174,7 +173,6 @@
             measuresStack.addArrangedSubview(weightView)
             self.scrollView.addSubview(measuresStack)
         }
-        
         func getSpecies(){
             
             let isBabyView = PokemonSizeView(title: "Baby", value: "...")
@@ -219,15 +217,11 @@
         }
         
         
-        
-        
         func getPokemonImages () {
-            
             let images = [pokemon.sprites.front_default,
                           pokemon.sprites.front_shiny,
                           pokemon.sprites.back_default,
                           pokemon.sprites.back_shiny]
-            
             
             var position = 0
             
@@ -255,18 +249,9 @@
             }
         }
         func updateScrollViewContentSize() {
-            
-            
             let viewsHeight = pokemonView.frame.height + measuresStack.frame.height + speciedsStack.frame.height + abilitiesView.frame.height
-            
             let difference = viewsHeight - UIScreen.main.bounds.height
-            
-            print("viewsHeight \(viewsHeight)")
-            print(UIScreen.main.bounds.height)
-            print(difference)
-                        
             scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + difference + 80 )
-            
         }
     }
     

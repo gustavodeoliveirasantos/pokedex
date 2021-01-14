@@ -39,35 +39,7 @@ public class Services {
         
         task.resume()
     }
-    
-    
-    
-    
-    
-    
-    public static func getPokemonByName (name: String,successHandler: @escaping (Pokemon?) -> Void, failureHandler: @escaping () -> Void) {
-        
-        //  guard let bodyJson = try? JSONEncoder().encode(requestData) else { fatalError() }
-        
-        //        self.generalHttpRequestNonClients(url: ServicesURL.pokemonByName,
-        //                                          additionalUrlData: name,
-        //                                          bodyJson: nil ,
-        //
-        //                                           successHandler: { data in
-        //
-        //                                            DispatchQueue.main.async {
-        //                                            //    print(try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? NSDictionary)
-        //                                                let success = try? JSONDecoder().decode(Pokemon.self, from: data)
-        //                                                successHandler(success)
-        //                                            }
-        //
-        //                                           }) { error in
-        //            DispatchQueue.main.async {//ERRO
-        //                failureHandler()
-        //            }
-        //        }
-        
-    }
+  
     public static func getPokemonList (limit: Int?, offset: Int?, url: String?,  successHandler: @escaping (PokemonList?) -> Void, failureHandler: @escaping () -> Void) {
         
         var finalUrl: URL
@@ -76,7 +48,7 @@ public class Services {
         }
         else  {
             let query: NSDictionary = ["limit": String(limit!), "offset": String(offset!)]
-            var fullUrlString = ServicesURL.baseUrl.rawValue + ServicesURL.pokemonByName.rawValue
+            let fullUrlString = ServicesURL.baseUrl.rawValue + ServicesURL.pokemonByName.rawValue
             
             guard var urlRequest = URLComponents(string: fullUrlString) else { return }
             urlRequest.queryItems = query.map({ (name, value) in
