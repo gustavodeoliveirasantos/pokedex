@@ -12,9 +12,9 @@
     class PokemonDetailViewController: UIViewController {
         
         
-        let pokemon: Pokemon
-        var timer: Timer?
-        
+        private let pokemon: Pokemon
+        private var timer: Timer?
+        //VIEWS
         var scrollView = UIScrollView()
         var pokemonView = UIView()
         var pokemonNameLabel = UILabel()
@@ -65,7 +65,6 @@
             self.view.backgroundColor = .white
             pokemonView.translatesAutoresizingMaskIntoConstraints = false
             
-            
             pokemonInfoStack.translatesAutoresizingMaskIntoConstraints = false
             pokemonInfoStack.axis = .vertical
             pokemonInfoStack.distribution = .fill
@@ -79,7 +78,6 @@
             pokemonNameLabel.font = UIFont.boldSystemFont(ofSize: 18)
             pokemonNameLabel.translatesAutoresizingMaskIntoConstraints = false;
             
-            
             pokemonImageView.translatesAutoresizingMaskIntoConstraints = false;
             
             pokemonInfoStack.addArrangedSubview(pokemonIdLabel)
@@ -91,7 +89,6 @@
             
             getMeasures()
             getSpecies()
-          
             
             abilitiesView.translatesAutoresizingMaskIntoConstraints = false
             self.scrollView.addSubview(abilitiesView)
@@ -101,7 +98,7 @@
             self.view.addSubview(scrollView)
             
             setupConstraints ()
-                        
+            
         }
         
         func setupConstraints () {
@@ -139,9 +136,8 @@
                 
                 abilitiesView.topAnchor.constraint(equalTo:  speciedsStack.bottomAnchor, constant: 10),
                 abilitiesView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20),
-                abilitiesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -20),
-                //
-                
+                abilitiesView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -20)
+              
             ])
         }
         func getMeasures(){
@@ -195,28 +191,21 @@
             
             scrollView.addSubview(speciedsStack)
             
-            
-            Services.getPokemonSpecie(from: pokemon.species.url) { (specie) in
+            Services.invokePokemonService(from: pokemon.species.url, type: Specie.self) { (specie) in
                 if let specie = specie {
                     DispatchQueue.main.async {
                         isBabyView.valueLabel.text = specie.is_baby ? "Yes" : "No"
                         isLegendaryView.valueLabel.text = specie.is_legendary ? "Yes" : "No"
                         isMythicalView.valueLabel.text = specie.is_mythical ? "Yes" : "No"
                     }
-                }
-                
-                
-                else {
+                } else {
                     print ("ERRO")
                 }
-                
                 
             } failureHandler: {
                 print ("Erro")
             }
         }
-        
-        
         func getPokemonImages () {
             let images = [pokemon.sprites.front_default,
                           pokemon.sprites.front_shiny,
@@ -230,8 +219,6 @@
             DispatchQueue.main.async {
                 self.pokemonImageView.image = UIImage(data: data!)
             }
-            
-            
             timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
                 
                 if position == images.count {
@@ -243,7 +230,6 @@
                 DispatchQueue.main.async {
                     self.pokemonImageView.image = UIImage(data: data!)
                 }
-                
                 position += 1
                 
             }
@@ -251,7 +237,7 @@
         func updateScrollViewContentSize() {
             let viewsHeight = pokemonView.frame.height + measuresStack.frame.height + speciedsStack.frame.height + abilitiesView.frame.height
             let difference = viewsHeight - UIScreen.main.bounds.height
-            scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + difference + 80 )
+            scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + difference + 90 )
         }
     }
     

@@ -114,8 +114,8 @@ extension PokemonListViewController : UITableViewDataSource {
     func updatePokemonList(url: String) {
         
    //    pokemonList.next
-        Services.getPokemonList(limit: nil, offset: nil, url: url) { (pokemonList) in
-            
+        
+        Services.invokePokemonService(from: url, type: PokemonList.self) { (pokemonList ) in
             if let list = pokemonList {
           
                 self.pokemonList.next = list.next
@@ -131,6 +131,8 @@ extension PokemonListViewController : UITableViewDataSource {
             print("ERROR")
         }
 
+        
+        
         
        
     }

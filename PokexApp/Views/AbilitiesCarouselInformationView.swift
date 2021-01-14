@@ -185,8 +185,7 @@ class AbilitiesCarouselInformationView: UIView {
     
     func getDescription (viewModel: AbilitiesCarouselInformationViewModel, in label: UILabel, loading: UIActivityIndicatorView ) {
         
-       
-        Services.getPokemonAbilities(from: viewModel.url) { (ability) in
+        Services.invokePokemonService(from: viewModel.url, type: Ability.self) { (ability) in
             if let ability = ability {
                 
                 let englishEffectEntrie = ability.effect_entries.first(where: {$0.language.name.lowercased() == "en" })
@@ -198,19 +197,13 @@ class AbilitiesCarouselInformationView: UIView {
                  
                     self.layoutIfNeeded()
                 }
-                
-            }
-            
-            
-            else {
+            } else {
                 print ("ERRO")
             }
-            
             
         } failureHandler: {
             print ("Erro")
         }
-        
         
     }
     func updatePageIndicator()    {

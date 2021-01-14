@@ -37,13 +37,13 @@ public class MainCoordinator: Coordinator {
 
 extension MainCoordinator: PokedexViewControllerDelegate {
     func PokedexViewControllerDidTappedList(viewController: PokedexViewController) {
-        
-     
     //    viewController.setLoading (true)
-        Services.getPokemonList(limit: 20, offset: 60, url: nil) { (pokemonList) in
+        
+        let url = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0"
+        
+        Services.invokePokemonService(from: url, type: PokemonList.self) { (pokemonList) in
             if let list = pokemonList {
-                DispatchQueue.main.async {
-        //            viewController.setLoading (false)
+                DispatchQueue.main.async {  
                     let pokemonListViewController = PokemonListViewController(pokemonList: list)
                     pokemonListViewController.delegate = self
                     self.navigationController.pushViewController(pokemonListViewController, animated: true)
@@ -62,8 +62,7 @@ extension MainCoordinator:PokemonListViewControllerDelegate {
     func pokemonListViewController(didSelect pokemonDetailsUrl: String, viewController: PokemonListViewController) {
         print(pokemonDetailsUrl)
         
-        Services.getPokemonDetail(from: pokemonDetailsUrl) { (pokemon) in
-      
+        Services.invokePokemonService(from: pokemonDetailsUrl, type: Pokemon.self) { (pokemon) in
             if let pokemon = pokemon {
                 DispatchQueue.main.async {
                     let pokemonDetailViewController = PokemonDetailViewController(pokemon: pokemon)
@@ -76,8 +75,6 @@ extension MainCoordinator:PokemonListViewControllerDelegate {
             } failureHandler: {
             print("Erro")
         }
-        
-        
     
     }
     
